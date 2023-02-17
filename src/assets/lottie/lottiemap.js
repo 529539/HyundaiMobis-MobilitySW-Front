@@ -14,8 +14,8 @@ export default function lottiemap() {
 	return (
 		<Lottie
 			options={defaultOptions}
-			width={300}
-			height={220}
+			width={280}
+			height={200}
 			style={{ position: "absolute" }}
 		/>
 	);

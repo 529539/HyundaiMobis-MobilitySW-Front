@@ -86,6 +86,7 @@ const MenuDiv = styled.div`
 const Gradient = styled.div`
 	width: 100%;
 	height: 180px;
+	border-radius: 15px;
 	position: absolute;
 	z-index: 10;
 	background: linear-gradient(

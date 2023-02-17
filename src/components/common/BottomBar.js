@@ -19,7 +19,7 @@ const BottomBar = (props) => {
 						className="text"
 						style={{
 							backgroundColor: isCourse ? "#e92b25" : "#fff",
-							fontWeight: isCourse ? "700" : "400",
+							fontWeight: isCourse ? "500" : "400",
 							color: isCourse ? "#fff" : "#727272",
 						}}
 					>
@@ -39,7 +39,7 @@ const BottomBar = (props) => {
 						className="text"
 						style={{
 							backgroundColor: isCourse ? "#fff" : "#e92b25",
-							fontWeight: isCourse ? "400" : "700",
+							fontWeight: isCourse ? "400" : "500",
 							color: isCourse ? "#727272" : "#fff",
 						}}
 					>
@@ -55,11 +55,12 @@ export default BottomBar;
 
 const BottomBarDiv = styled.div`
 	width: 100%;
-	height: 100px;
+	height: 90px;
 	position: fixed;
 	z-index: 100;
 	bottom: 0;
 	display: flex;
+	background-color: #fff;
 	border-top: 1px solid #eaeaea;
 	box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.25);
 	@media (min-width: 390px) {

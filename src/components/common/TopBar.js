@@ -27,12 +27,14 @@ const TopBar = (props) => {
 export default TopBar;
 
 const TopBarDiv = styled.div`
-	position: absolute;
+	position: fixed;
 	top: 0;
 	width: 100%;
 	height: 60px;
 	display: flex;
 	border-bottom: 1px solid #eaeaea;
+	background-color: #fff;
+	z-index: 100;
 	.arrow {
 		padding: 20px;
 		position: absolute;

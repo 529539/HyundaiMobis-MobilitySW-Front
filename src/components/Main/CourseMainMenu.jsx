@@ -65,11 +65,13 @@ const MenuDiv = styled.div`
 	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 	border-radius: 15px;
 	margin-bottom: 60px;
+	overflow: hidden;
 `;
 
 const Gradient = styled.div`
 	width: 100%;
 	height: 220px;
+	border-radius: 15px;
 	position: absolute;
 	z-index: 10;
 	background: linear-gradient(
