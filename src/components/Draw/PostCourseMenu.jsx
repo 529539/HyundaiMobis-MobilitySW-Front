@@ -10,7 +10,9 @@ const PostCourseMenu = (props) => {
 	return (
 		<Wrapper>
 			<TopBar title="코스 등록하기" logo={false} back={true} />
-			<Container></Container>
+			<Container>
+				<h1>.</h1>
+			</Container>
 		</Wrapper>
 	);
 };
