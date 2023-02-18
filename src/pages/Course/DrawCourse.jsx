@@ -16,7 +16,7 @@ const DrawCourse = () => {
 					setIsDrawing={setIsDrawing}
 				/>
 			) : (
-				<PostCourseMenu drawpath={drawpath} />
+				<PostCourseMenu drawpath={drawpath} setIsDrawing={setIsDrawing} />
 			)}
 			<BottomBar isCourse={isCourse} setIsCourse={setIsCourse} />
 		</>

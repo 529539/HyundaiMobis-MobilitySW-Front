@@ -46,7 +46,7 @@ const Wrapper = styled.div`
 	.title-text {
 		margin-top: 20px;
 		font-family: "Pretendard";
-		font-weight: 700;
+		font-weight: 500;
 		font-size: 24px;
 		text-align: center;
 		color: #263f81;

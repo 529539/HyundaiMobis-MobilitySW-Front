@@ -178,6 +178,7 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
 	margin-top: 90px;
+	margin-bottom: 150px;
 	width: 85%;
 	display: flex;
 	flex-direction: column;
@@ -286,7 +287,6 @@ const ButtonBox = styled.div`
 	position: relative;
 	margin: 0 auto;
 	margin-top: 20px;
-	margin-bottom: 150px;
 	width: 200px;
 	height: 46px;
 	border: 1px solid #e92b25;

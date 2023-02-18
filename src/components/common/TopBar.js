@@ -6,12 +6,16 @@ import logoimg from "../../assets/logo.svg";
 
 const TopBar = (props) => {
 	const nav = useNavigate();
-	const { title, logo, back } = props;
+	const { title, logo, back, navTo } = props;
 	return (
 		<>
 			<TopBarDiv>
 				{back ? (
-					<img src={arrow} className="arrow" onClick={() => nav(-1)} />
+					<img
+						src={arrow}
+						className="arrow"
+						onClick={navTo ? () => navTo(true) : () => nav(-1)}
+					/>
 				) : null}
 				{logo ? (
 					<div className="logo-container">
@@ -34,7 +38,7 @@ const TopBarDiv = styled.div`
 	display: flex;
 	border-bottom: 1px solid #eaeaea;
 	background-color: #fff;
-	z-index: 100;
+	z-index: 1000;
 	.arrow {
 		padding: 20px;
 		position: absolute;

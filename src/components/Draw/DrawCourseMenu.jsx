@@ -36,7 +36,7 @@ const DrawCourseMenu = (props) => {
 		});
 	}, []);
 	useEffect(() => {
-		console.log("draw", drawpath);
+		console.log("drawpath", drawpath);
 	});
 	return (
 		<>
@@ -44,7 +44,9 @@ const DrawCourseMenu = (props) => {
 				<TopBar title="코스 직접 그리기" logo={false} back={true} />
 				<Container>
 					<div id="map" style={{ width: "100%", height: "100%" }} />
-					<ButtonBox onClick={() => setIsDrawing(false)}>
+					<ButtonBox
+						onClick={drawpath.length === 0 ? null : () => setIsDrawing(false)}
+					>
 						<p>그리기 완료하기</p>
 					</ButtonBox>
 				</Container>
@@ -75,7 +77,7 @@ const Container = styled.div`
 
 const ButtonBox = styled.div`
 	position: absolute;
-	bottom: 30px;
+	top: 30px;
 	width: 150px;
 	height: 40px;
 	border: 2px solid #e92b25;

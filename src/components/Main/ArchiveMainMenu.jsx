@@ -61,7 +61,7 @@ const Wrapper = styled.div`
 		position: relative;
 		margin-top: 100px;
 		font-family: "Pretendard";
-		font-weight: 700;
+		font-weight: 500;
 		font-size: 24px;
 		text-align: center;
 		color: #263f81;

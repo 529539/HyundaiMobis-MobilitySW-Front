@@ -3,7 +3,7 @@
 	"name": "현대모비스 해커톤 9팀",
 	"icons": [
 		{
-			"src": "favicon.ico",
+			"src": "img/favicon.ico",
 			"sizes": "64x64 32x32 24x24 16x16",
 			"type": "image/x-icon"
 		}
