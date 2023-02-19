@@ -99,7 +99,7 @@ const PostCourseMenu = (props) => {
 		new window.naver.maps.Marker(fMarkerOptions);
 		GetAddress(`${drawpath[0].x},${drawpath[0].y}`)
 			.then((res) => {
-				//console.log(res);
+				console.log(res);
 				return res.data;
 			})
 			.then((data) => {
