@@ -2,9 +2,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TopBar from "../common/TopBar";
+import ColorPicker from "./ColorPicker";
 import html2canvas from "html2canvas";
 import { hashtagarray } from "../Search/searchlist";
 import { GetAddress } from "../../api/navermap";
+import { PostCourse } from "../../api/course";
 
 const PostCourseMenu = (props) => {
 	const nav = useNavigate();
@@ -16,8 +18,16 @@ const PostCourseMenu = (props) => {
 
 	const [departures, setDepartures] = useState("");
 	const [arrivals, setArrivals] = useState("");
+	const [departuresLoc, setDeparturesLoc] = useState("");
+	const [arrivalsLoc, setArrivalsLoc] = useState("");
 	const [description, setDescription] = useState("");
-	const [hashtag, setHashtag] = useState(null);
+	const [hashtag, setHashtag] = useState("");
+	const [color1, setColor1] = useState("#E92B25");
+	const [color2, setColor2] = useState("#263F81");
+	const [pickColor1, setPickColor1] = useState("#E92B25");
+	const [pickColor2, setPickColor2] = useState("#263F81");
+	const [openColor1, setOpenColor1] = useState(false);
+	const [openColor2, setOpenColor2] = useState(false);
 	const [music, setMusic] = useState("");
 	const onChangeDescriptionInput = useCallback(
 		(e) => {
@@ -48,7 +58,6 @@ const PostCourseMenu = (props) => {
 		drawpath.map((ll) => {
 			newBounds.extend(ll);
 		});
-		console.log(newBounds);
 		const mapOptions = {
 			bounds: newBounds,
 			draggable: false,
@@ -94,10 +103,17 @@ const PostCourseMenu = (props) => {
 				return res.data;
 			})
 			.then((data) => {
-				//console.log(data.results[0]);
-				setDepartures(
-					`${data.results[0].region.area1.name} ${data.results[0].region.area2.name} ${data.results[0].region.area3.name} ${data.results[0].land.name} ${data.results[0].land.number1} ${data.results[0].land.addition0.value} (우) ${data.results[0].land.addition1.value}`
-				);
+				if (data.status.code === 3)
+					setDepartures(
+						"주소가 정상적으로 반환되지 않았습니다. 다시 시도해주세요."
+					);
+				else {
+					//console.log(data.results[0]);
+					setDepartures(
+						`${data.results[0].region.area1.name} ${data.results[0].region.area2.name} ${data.results[0].region.area3.name} ${data.results[0].land.name} ${data.results[0].land.number1} ${data.results[0].land.addition0.value} (우) ${data.results[0].land.addition1.value}`
+					);
+					setDeparturesLoc(data.results[0].region.area2.name);
+				}
 			})
 			.catch((err) => console.log(err));
 		GetAddress(
@@ -108,10 +124,17 @@ const PostCourseMenu = (props) => {
 				return res.data;
 			})
 			.then((data) => {
-				//console.log(data.results[0]);
-				setArrivals(
-					`${data.results[0].region.area1.name} ${data.results[0].region.area2.name} ${data.results[0].region.area3.name} ${data.results[0].land.name} ${data.results[0].land.number1} ${data.results[0].land.addition0.value} (우) ${data.results[0].land.addition1.value}`
-				);
+				if (data.status.code === 3)
+					setArrivals(
+						"주소가 정상적으로 반환되지 않았습니다. 다시 시도해주세요."
+					);
+				else {
+					//console.log(data.results[0]);
+					setArrivals(
+						`${data.results[0].region.area1.name} ${data.results[0].region.area2.name} ${data.results[0].region.area3.name} ${data.results[0].land.name} ${data.results[0].land.number1} ${data.results[0].land.addition0.value} (우) ${data.results[0].land.addition1.value}`
+					);
+					setArrivalsLoc(data.results[0].region.area2.name);
+				}
 			})
 			.catch((err) => console.log(err));
 	}, [ycenter, xcenter]);
@@ -140,10 +163,51 @@ const PostCourseMenu = (props) => {
 	useEffect(() => {}, [formData]);
 
 	const goPost = () => {
-		console.log("post할 필드");
-		//필드 충족 조건
-		//api
-		//nav(/detail/id)
+		console.log(
+			"배열: ",
+			drawpath,
+			"\n출발(구, 상세): ",
+			departures,
+			", ",
+			departuresLoc,
+			"\n도착(구, 상세): ",
+			arrivals,
+			", ",
+			arrivalsLoc,
+			"\n설명: ",
+			description,
+			"\n해시태그: ",
+			hashtag,
+			"\n조명: ",
+			pickColor1,
+			pickColor2,
+			"\n음악: ",
+			music
+		);
+		if (description === "" || hashtag === "" || music === "") {
+			alert("모든 항목을 입력했는지 확인해주세요.");
+		} else {
+			PostCourse(
+				description,
+				departuresLoc,
+				departures,
+				arrivalsLoc,
+				arrivals,
+				hashtag,
+				music,
+				pickColor1,
+				pickColor2,
+				drawpath
+			)
+				.then((res) => {
+					console.log(res);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+			var id = 1;
+			nav(`/course/${id}`);
+		}
 	};
 	return (
 		<Wrapper>
@@ -152,6 +216,7 @@ const PostCourseMenu = (props) => {
 				logo={false}
 				back={true}
 				navTo={setIsDrawing}
+				bool={true}
 			/>
 			<Container>
 				<div className="inner">
@@ -200,6 +265,41 @@ const PostCourseMenu = (props) => {
 					})}
 				</SelectContainer>
 				<SectionTitle>💡 차량 조명</SectionTitle>
+				<div className="inner">
+					<ColorPreview
+						style={{
+							background: `linear-gradient(90deg, ${pickColor1} 0%, ${pickColor2} 100%)`,
+						}}
+					/>
+					<div
+						style={{
+							display: "flex",
+							justifyContent: "space-between",
+							width: "95%",
+						}}
+					>
+						<ColorCircle
+							style={{ backgroundColor: `${pickColor1}` }}
+							onClick={() => {
+								setOpenColor2(false);
+								setOpenColor1(true);
+							}}
+						/>
+						<ColorCircle
+							style={{ backgroundColor: `${pickColor2}` }}
+							onClick={() => {
+								setOpenColor1(false);
+								setOpenColor2(true);
+							}}
+						/>
+					</div>
+				</div>
+				{openColor1 ? (
+					<ColorPicker pickColor={pickColor1} setPickColor={setPickColor1} />
+				) : null}
+				{openColor2 ? (
+					<ColorPicker pickColor={pickColor2} setPickColor={setPickColor2} />
+				) : null}
 				<SectionTitle>💿 음악 플레이리스트</SectionTitle>
 				<div className="inner">
 					<MusicInput
@@ -224,6 +324,7 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	overflow-x: hidden !important;
 `;
 
 const Container = styled.div`
@@ -233,6 +334,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	position: relative;
+	overflow-x: hidden !important;
 	.inner {
 		width: 100%;
 		display: flex;
@@ -259,7 +361,7 @@ const SectionFlex = styled.div`
 
 const SectionTitle = styled.div`
 	font-family: "Pretendard";
-	font-weight: 600;
+	font-weight: 500;
 	font-size: 18px;
 	color: #000;
 	margin: 25px 0 10px 5px;
@@ -313,6 +415,22 @@ const DescriptionInput = styled.textarea`
 	color: #000;
 	margin-top: 5px;
 	padding: 7px;
+`;
+
+const ColorPreview = styled.div`
+	width: 95%;
+	height: 40px;
+	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+	border-radius: 20px;
+	margin: 10px 0;
+`;
+
+const ColorCircle = styled.div`
+	width: 35px;
+	height: 35px;
+	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+	margin: 5px;
+	border-radius: 50%;
 `;
 
 const MusicInput = styled.textarea`

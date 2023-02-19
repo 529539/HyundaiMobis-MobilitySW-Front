@@ -6,7 +6,7 @@ import logoimg from "../../assets/logo.svg";
 
 const TopBar = (props) => {
 	const nav = useNavigate();
-	const { title, logo, back, navTo } = props;
+	const { title, logo, back, navTo, bool } = props;
 	return (
 		<>
 			<TopBarDiv>
@@ -14,7 +14,7 @@ const TopBar = (props) => {
 					<img
 						src={arrow}
 						className="arrow"
-						onClick={navTo ? () => navTo(true) : () => nav(-1)}
+						onClick={navTo ? () => navTo(bool) : () => nav(-1)}
 					/>
 				) : null}
 				{logo ? (

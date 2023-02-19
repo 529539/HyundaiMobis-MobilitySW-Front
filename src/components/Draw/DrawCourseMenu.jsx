@@ -27,7 +27,6 @@ const DrawCourseMenu = (props) => {
 			var point = e.coord;
 			var path = polyline.getPath();
 			path.push(point);
-			console.log(point);
 			new window.naver.maps.Marker({
 				map: map,
 				position: path._array[0],
@@ -85,7 +84,7 @@ const ButtonBox = styled.div`
 	border-radius: 21px;
 	p {
 		font-family: "Pretendard";
-		font-weight: 600;
+		font-weight: 500;
 		font-size: 18px;
 		line-height: 40px;
 		text-align: center;

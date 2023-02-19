@@ -4,6 +4,7 @@ import Main from "./pages/Main";
 import CourseSearch from "./pages/Course/CourseSearch";
 import ResultCourse from "./pages/Course/ResultCourse";
 import DetailCourse from "./pages/Course/DetailCourse";
+import DrivingCourse from "./pages/Course/DrivingCourse";
 import DrawCourse from "./pages/Course/DrawCourse";
 import DrivedCourse from "./pages/Archive/DrivedCourse";
 import CourseBookmark from "./pages/Archive/CourseBookmark";
@@ -21,11 +22,8 @@ function App() {
 						path="/search-course/result"
 						element={<ResultCourse />}
 					/>
-					<Route
-						exact
-						path="/search-course/:courseId"
-						element={<DetailCourse />}
-					/>
+					<Route exact path="/course/:id" element={<DetailCourse />} />
+					<Route exact path="/course/:id/driving" element={<DrivingCourse />} />
 					<Route exact path="/draw-course" element={<DrawCourse />} />
 					<Route exact path="/drived" element={<DrivedCourse />} />
 					<Route exact path="/bookmark" element={<CourseBookmark />} />

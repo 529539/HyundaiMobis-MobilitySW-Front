@@ -1,19 +1,65 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import TopBar from "../common/TopBar";
 import { GoSearch } from "react-icons/go";
+import BookmarkBox from "../common/BookmarkBox";
+import { SearchCourse } from "../../api/course";
+import { mockarray } from "../../api/_mock";
 
-const ResultCourseMenu = () => {
+const ResultCourseMenu = (props) => {
+	const nav = useNavigate();
+	const [searchParams, setSearchParams] = useSearchParams();
+	const [time, setTime] = useState(0);
+	const [departures, setDepartures] = useState("null");
+	const [arrivals, setArrivals] = useState("null");
+	const [hashtag, setHashtag] = useState("null");
+	useEffect(() => {
+		setTime(searchParams.get("time"));
+		setDepartures(searchParams.get("departures"));
+		setArrivals(searchParams.get("arrivals"));
+		setHashtag(searchParams.get("hashtag"));
+	}, []);
+	const [timeText, setTimeText] = useState("");
+	const timeRevert = (time) => {
+		if (time <= 60) setTimeText(`약 ${time}분`);
+		else {
+			var h = parseInt(time / 60);
+			var m = time % 60;
+			setTimeText(`약 ${h}시간 ${m}분`);
+		}
+	};
+	useEffect(() => {
+		timeRevert(time);
+		// SearchCourse(time, departures, arrivals, hashtag)
+		// 	.then((res) => console.log(res))
+		// 	.catch((err) => console.log(err));
+	}, [time]);
 	return (
 		<Wrapper>
 			<TopBar title="검색 결과" logo={false} back={true} />
 			<Container>
-				<SearchBox>
-					<GoSearch fill="#727272" />
-					<p>30분, 목적지: 마포구, #신나는</p>
-				</SearchBox>
-				<p className="recom">추천순</p>
-				<h1>.</h1>
+				<div
+					style={{ width: "95%", position: "relative", marginBottom: "20px" }}
+				>
+					<SearchBox>
+						<div className="icon-container">
+							<GoSearch fill="#727272" />
+						</div>
+						<div>
+							{timeText}
+							{departures === "null" ? "" : `, 출발지: ${departures}`}
+							{arrivals === "null" ? "" : `, 목적지: ${arrivals}`}
+							{hashtag === "null" ? "" : `, #${hashtag}`}
+						</div>
+					</SearchBox>
+					<div className="recom">정렬: 즐겨찾기 수</div>
+				</div>
+				{mockarray.map((course) => {
+					return (
+						<BookmarkBox course={course} key={course.courseId} isMy={false} />
+					);
+				})}
 			</Container>
 		</Wrapper>
 	);
@@ -37,31 +83,38 @@ const Container = styled.div`
 	align-items: center;
 	position: relative;
 	.recom {
-		position: absolute;
-		top: 55px;
-		right: 10px;
 		font-family: "Pretendard";
 		font-weight: 400;
 		font-size: 13px;
-		line-height: 16px;
+		text-align: right;
 		color: #727272;
+		margin-right: 7px;
 	}
 `;
 
 const SearchBox = styled.div`
 	width: 95%;
-	height: 40px;
+	min-height: 40px;
 	border: 1px solid #eaeaea;
 	display: flex;
+	flex-shrink: 0;
 	align-items: center;
-	margin-bottom: 20px;
-	svg {
-		padding: 10px;
+	margin-bottom: 8px;
+	padding-right: 7px;
+	.icon-container {
+		width: 40px;
+		height: 40px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 0 2px;
 	}
-	p {
+	div {
 		font-family: "Pretendard";
 		font-weight: 400;
 		font-size: 15px;
-		line-height: 40px;
+		line-height: 18px;
+		word-break: keep-all;
+		margin: 7px 0;
 	}
 `;

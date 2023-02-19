@@ -5,20 +5,28 @@ import TopBar from "../common/TopBar";
 import { timearray, seoul, hashtagarray } from "./searchlist";
 
 const CourseSearchMenu = () => {
+	const nav = useNavigate();
 	const [time, setTime] = useState(0);
 	const [departures, setDepartures] = useState(null);
 	const [dOpen, setDOpen] = useState(false);
 	const [arrivals, setArrivals] = useState(null);
 	const [aOpen, setAOpen] = useState(false);
 	const [hashtag, setHashtag] = useState(null);
-	const nav = useNavigate();
 	const goSearch = () => {
 		if (time === 0) {
 			alert(
 				"소요 시간은 필수로 선택해야하는 조건입니다. 원하는 소요 시간을 선택해주세요!"
 			);
 		} else {
-			nav("/search-course/result");
+			const searchQuery = {
+				time: time,
+				departures: departures,
+				arrivals: arrivals,
+				hashtag: hashtag,
+			};
+			nav(
+				`/search-course/result?time=${searchQuery.time}&departures=${departures}&arrivals=${arrivals}&hashtag=${hashtag}`
+			);
 		}
 	};
 	useEffect(() => {
@@ -136,7 +144,7 @@ const CourseSearchMenu = () => {
 									backgroundColor: hashtag === h ? "#eaeaea" : "#fff",
 								}}
 							>
-								<p>{h}</p>
+								<p>#{h}</p>
 							</SelectBox>
 						);
 					})}
