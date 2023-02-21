@@ -6,13 +6,16 @@ import { GetDrivedCourse } from "../../api/archive";
 
 const DrivedCourseMenu = () => {
 	const [array, setArray] = useState([]);
-	useEffect(() => {
+	const getArray = () => {
 		GetDrivedCourse(1)
 			.then((res) => {
 				console.log(res.data);
 				setArray(res.data.data);
 			})
 			.catch((err) => console.log(err));
+	};
+	useEffect(() => {
+		getArray();
 	}, []);
 	return (
 		<Wrapper>

@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PathtoMap from "../Drive/PathtoMap";
 import { BiTrash } from "react-icons/bi";
-import { DeleteUploadedCourse } from "../../api/archive";
 
 const DeleteBox = (props) => {
-	const { course, isDeleteAble } = props;
+	const { course, isDeleteAble, Delete } = props;
 	const nav = useNavigate();
 	const [timeText, setTimeText] = useState("");
 	const timeRevert = (time) => {
@@ -20,11 +19,6 @@ const DeleteBox = (props) => {
 	useEffect(() => {
 		timeRevert(course.totalTime);
 	}, [course]);
-	const Delete = () => {
-		DeleteUploadedCourse(course.courseId)
-			.then((res) => console.log(res))
-			.catch((err) => console.log(err));
-	};
 	return (
 		<Wrapper>
 			<UnderBox>
@@ -53,7 +47,7 @@ const DeleteBox = (props) => {
 				</TextDiv>
 			</Box>
 			{isDeleteAble ? (
-				<DeleteDiv onClick={() => Delete()}>
+				<DeleteDiv onClick={() => Delete(course.courseId)}>
 					<BiTrash fill="#727272" size="20" />
 				</DeleteDiv>
 			) : null}

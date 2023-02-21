@@ -2,17 +2,28 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TopBar from "../common/TopBar";
 import DeleteBox from "../common/DeleteBox";
-import { GetUploadedCourse } from "../../api/archive";
+import { GetUploadedCourse, DeleteUploadedCourse } from "../../api/archive";
 
 const UploadedCourseMenu = () => {
 	const [array, setArray] = useState([]);
-	useEffect(() => {
+	const getArray = () => {
 		GetUploadedCourse(1)
 			.then((res) => {
 				console.log(res.data);
 				setArray(res.data.data);
 			})
 			.catch((err) => console.log(err));
+	};
+	const Delete = (courseId) => {
+		DeleteUploadedCourse(courseId)
+			.then((res) => {
+				console.log(res);
+				getArray();
+			})
+			.catch((err) => console.log(err));
+	};
+	useEffect(() => {
+		getArray();
 	}, []);
 	return (
 		<Wrapper>
@@ -25,6 +36,7 @@ const UploadedCourseMenu = () => {
 							course={course}
 							key={course.courseId}
 							isDeleteAble={true}
+							Delete={Delete}
 						/>
 					);
 				})}

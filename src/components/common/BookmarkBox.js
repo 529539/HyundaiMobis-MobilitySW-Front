@@ -4,28 +4,11 @@ import styled from "styled-components";
 import PathtoMap from "../Drive/PathtoMap";
 import fillbookmark from "../../assets/fillbookmark.svg";
 import strokebookmark from "../../assets/strokebookmark.svg";
-import { PostBookmarkCourse, DeleteBookmarkCourse } from "../../api/archive";
 
 const BookmarkBox = (props) => {
-	const { course, isMy } = props;
+	const { course, isMy, Scrap, UnScrap } = props;
 	const [src, setSrc] = useState(isMy ? fillbookmark : strokebookmark);
 	const nav = useNavigate();
-	const Scrap = () => {
-		PostBookmarkCourse(course.courseId)
-			.then((res) => {
-				console.log(res);
-				setSrc(fillbookmark);
-			})
-			.catch((err) => console.log(err));
-	};
-	const UnScrap = () => {
-		DeleteBookmarkCourse(course.courseId)
-			.then((res) => {
-				console.log(res);
-				setSrc(strokebookmark);
-			})
-			.catch((err) => console.log(err));
-	};
 	return (
 		<Wrapper>
 			<Box onClick={() => nav(`/course/${course.courseId}`)}>
@@ -55,7 +38,15 @@ const BookmarkBox = (props) => {
 			</Box>
 			<BookmarkDiv
 				onClick={
-					isMy ? () => UnScrap(course.courseId) : () => Scrap(course.courseId)
+					isMy
+						? () => {
+								UnScrap(course.courseId);
+								setSrc(strokebookmark);
+						  }
+						: () => {
+								Scrap(course.courseId);
+								setSrc(fillbookmark);
+						  }
 				}
 			>
 				<div>{course.scrap}</div>

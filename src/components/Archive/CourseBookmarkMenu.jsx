@@ -2,18 +2,43 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TopBar from "../common/TopBar";
 import BookmarkBox from "../common/BookmarkBox";
-import { GetBookmarkCourse } from "../../api/archive";
+import {
+	GetBookmarkCourse,
+	PostBookmarkCourse,
+	DeleteBookmarkCourse,
+} from "../../api/archive";
+import fillbookmark from "../../assets/fillbookmark.svg";
+import strokebookmark from "../../assets/strokebookmark.svg";
 
 const CourseBookmarkMenu = () => {
 	const [array, setArray] = useState([]);
-	useEffect(() => {
+	const getArray = () => {
 		GetBookmarkCourse(1)
 			.then((res) => {
 				console.log(res.data);
 				setArray(res.data.data);
 			})
 			.catch((err) => console.log(err));
+	};
+	useEffect(() => {
+		getArray();
 	}, []);
+	const Scrap = (courseId) => {
+		PostBookmarkCourse(courseId)
+			.then((res) => {
+				console.log(res);
+				getArray();
+			})
+			.catch((err) => console.log(err));
+	};
+	const UnScrap = (courseId) => {
+		DeleteBookmarkCourse(courseId)
+			.then((res) => {
+				console.log(res);
+				getArray();
+			})
+			.catch((err) => console.log(err));
+	};
 	return (
 		<Wrapper>
 			<TopBar title="내가 즐겨찾기한 코스" logo={false} back={true} />
@@ -21,7 +46,13 @@ const CourseBookmarkMenu = () => {
 				<div className="recom">오래된순</div>
 				{array.map((course) => {
 					return (
-						<BookmarkBox course={course} key={course.courseId} isMy={true} />
+						<BookmarkBox
+							course={course}
+							key={course.courseId}
+							isMy={true}
+							Scrap={Scrap}
+							UnScrap={UnScrap}
+						/>
 					);
 				})}
 			</Container>
