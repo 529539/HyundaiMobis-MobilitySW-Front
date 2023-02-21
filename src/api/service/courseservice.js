@@ -38,4 +38,6 @@ export const CourseService = {
 			color2: color2,
 			path: path,
 		}),
+	postDrive: (courseId) => http.post(`/drive/${courseId}`, { userId: 1 }),
+	patchDrive: (driveId) => http.patch(`/drive/${driveId}`),
 };

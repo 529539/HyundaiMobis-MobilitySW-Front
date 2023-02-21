@@ -60,3 +60,21 @@ export const PostCourse = async (
 		return Promise.reject(error);
 	}
 };
+
+export const PostDrive = async (courseId) => {
+	try {
+		const response = await CourseService.postDrive(courseId);
+		return Promise.resolve(response);
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
+export const PatchDrive = async (driveId) => {
+	try {
+		const response = await CourseService.patchDrive(driveId);
+		return Promise.resolve(response);
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};

@@ -13,9 +13,9 @@ const CourseSearchMenu = () => {
 	const [aOpen, setAOpen] = useState(false);
 	const [hashtag, setHashtag] = useState(null);
 	const goSearch = () => {
-		if (time === 0 || departures === null || hashtag === null) {
+		if (time === 0) {
 			alert(
-				"목적지를 제외한 나머지 조건은 필수 입력 항목입니다.\n소요 시간, 출발지, 무드 해시태그를 모두 선택했는지 확인해주세요!"
+				"소요 시간은 필수 입력 항목입니다.\n원하는 소요 시간을 선택해주세요!"
 			);
 		} else {
 			const searchQuery = {
