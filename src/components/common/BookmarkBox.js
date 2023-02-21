@@ -1,48 +1,65 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import testmappreview from "../../assets/testmappreview.svg";
+import PathtoMap from "../Drive/PathtoMap";
 import fillbookmark from "../../assets/fillbookmark.svg";
 import strokebookmark from "../../assets/strokebookmark.svg";
+import { PostBookmarkCourse, DeleteBookmarkCourse } from "../../api/archive";
 
 const BookmarkBox = (props) => {
 	const { course, isMy } = props;
+	const [src, setSrc] = useState(isMy ? fillbookmark : strokebookmark);
 	const nav = useNavigate();
-	//courseId로 사진 조회
-	const [timeText, setTimeText] = useState("");
-	const timeRevert = (time) => {
-		if (time <= 60) setTimeText(`약 ${time}분`);
-		else {
-			var h = parseInt(time / 60);
-			var m = time % 60;
-			setTimeText(`약 ${h}시간 ${m}분`);
-		}
+	const Scrap = () => {
+		PostBookmarkCourse(course.courseId)
+			.then((res) => {
+				console.log(res);
+				setSrc(fillbookmark);
+			})
+			.catch((err) => console.log(err));
 	};
-	useEffect(() => {
-		timeRevert(course.totalTime);
-	}, [course]);
+	const UnScrap = () => {
+		DeleteBookmarkCourse(course.courseId)
+			.then((res) => {
+				console.log(res);
+				setSrc(strokebookmark);
+			})
+			.catch((err) => console.log(err));
+	};
 	return (
 		<Wrapper>
 			<Box onClick={() => nav(`/course/${course.courseId}`)}>
 				<MapPreviewDiv>
-					<MapPreview src={testmappreview} />
+					{course.path && (
+						<PathtoMap
+							path={course.path}
+							isLatLng={false}
+							isStatic={true}
+							isSmall={true}
+						/>
+					)}
 				</MapPreviewDiv>
 				<TextDiv>
-					<div>🕙 {timeText}</div>
+					<div>
+						🕙{" "}
+						{course.totalTime <= 60
+							? `약 ${course.totalTime}분`
+							: `약 ${parseInt(course.totalTime / 60)}시간 ${
+									course.totalTime % 60
+							  }분`}
+					</div>
 					<div>🛫 {course.startDetail}</div>
 					<div>🛬 {course.endDetail}</div>
 					<div>#️⃣ #{course.hashtag}</div>
 				</TextDiv>
 			</Box>
 			<BookmarkDiv
-				onClick={() =>
-					console.log(
-						isMy ? `UnLike(${course.courseId})` : `Like(${course.courseId})`
-					)
+				onClick={
+					isMy ? () => UnScrap(course.courseId) : () => Scrap(course.courseId)
 				}
 			>
 				<div>{course.scrap}</div>
-				<img src={isMy ? fillbookmark : strokebookmark} />
+				<img src={src} />
 			</BookmarkDiv>
 		</Wrapper>
 	);
@@ -84,14 +101,6 @@ const MapPreviewDiv = styled.div`
 	margin: 0 10px;
 `;
 
-const MapPreview = styled.img`
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	position: relative;
-	z-index: 0;
-`;
-
 const TextDiv = styled.div`
 	width: 185px;
 	height: 90%;
@@ -102,7 +111,7 @@ const TextDiv = styled.div`
 	div {
 		font-family: "Pretendard";
 		font-weight: 400;
-		font-size: 13px;
+		font-size: 12px;
 		margin: 5px 0;
 		word-break: keep-all;
 	}

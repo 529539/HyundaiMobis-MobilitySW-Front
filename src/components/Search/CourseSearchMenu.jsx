@@ -13,9 +13,9 @@ const CourseSearchMenu = () => {
 	const [aOpen, setAOpen] = useState(false);
 	const [hashtag, setHashtag] = useState(null);
 	const goSearch = () => {
-		if (time === 0) {
+		if (time === 0 || departures === null || hashtag === null) {
 			alert(
-				"소요 시간은 필수로 선택해야하는 조건입니다. 원하는 소요 시간을 선택해주세요!"
+				"목적지를 제외한 나머지 조건은 필수 입력 항목입니다.\n소요 시간, 출발지, 무드 해시태그를 모두 선택했는지 확인해주세요!"
 			);
 		} else {
 			const searchQuery = {
@@ -70,7 +70,9 @@ const CourseSearchMenu = () => {
 					})}
 				</SelectContainer>
 				<FlexWrapper>
-					<SectionTitle style={{ marginTop: "20px" }}>🛫 출발지</SectionTitle>
+					<SectionTitle style={{ marginTop: "20px" }}>
+						🛫 출발지 <span style={{ color: "#E92B25" }}>*</span>
+					</SectionTitle>
 					<PlaceBox onClick={() => setDOpen(true)}>
 						<p
 							style={{
@@ -132,7 +134,7 @@ const CourseSearchMenu = () => {
 					})}
 				</PlaceSelectContainer>
 				<SectionTitle style={{ marginTop: "20px" }}>
-					#️⃣ 무드 해시태그
+					#️⃣ 무드 해시태그 <span style={{ color: "#E92B25" }}>*</span>
 				</SectionTitle>
 				<SelectContainer>
 					{hashtagarray.map((h) => {

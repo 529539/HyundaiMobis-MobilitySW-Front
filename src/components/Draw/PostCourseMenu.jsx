@@ -3,19 +3,15 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TopBar from "../common/TopBar";
 import ColorPicker from "./ColorPicker";
-import html2canvas from "html2canvas";
-import { hashtagarray } from "../Search/searchlist";
+import PathtoMap from "../Drive/PathtoMap";
+import { timearray, hashtagarray } from "../Search/searchlist";
 import { GetAddress } from "../../api/navermap";
 import { PostCourse } from "../../api/course";
 
 const PostCourseMenu = (props) => {
 	const nav = useNavigate();
 	const { drawpath, setIsDrawing } = props;
-	const [ypoint, setYpoint] = useState([]);
-	const [xpoint, setXpoint] = useState([]);
-	const [ycenter, setYcenter] = useState(0);
-	const [xcenter, setXcenter] = useState(0);
-
+	const [time, setTime] = useState(0);
 	const [departures, setDepartures] = useState("");
 	const [arrivals, setArrivals] = useState("");
 	const [departuresLoc, setDeparturesLoc] = useState("");
@@ -43,60 +39,6 @@ const PostCourseMenu = (props) => {
 	);
 
 	useEffect(() => {
-		setYpoint(drawpath.map((row) => row.y));
-		setXpoint(drawpath.map((row) => row.x));
-	}, []);
-	useEffect(() => {
-		var yc = (Math.max(...ypoint) + Math.min(...ypoint)) / 2;
-		setYcenter(yc);
-		var xc = (Math.max(...xpoint) + Math.min(...xpoint)) / 2;
-		setXcenter(xc);
-	}, [ypoint, xpoint]);
-	useEffect(() => {
-		const mapDiv = document.getElementById("map2");
-		var newBounds = new window.naver.maps.LatLngBounds(null, null);
-		drawpath.map((ll) => {
-			newBounds.extend(ll);
-		});
-		const mapOptions = {
-			bounds: newBounds,
-			draggable: false,
-			pinchZoom: false,
-			scrollWheel: false,
-			keyboardShortcuts: false,
-			disableDoubleTapZoom: true,
-			disableDoubleClickZoom: true,
-			disableTwoFingerTapZoom: true,
-		};
-		const map = new window.naver.maps.Map(mapDiv, mapOptions);
-		var polyline = new window.naver.maps.Polyline({
-			map: map,
-			path: drawpath,
-			strokeColor: "#E92B25",
-			strokeWeight: 5,
-		});
-		var sMarkerOptions = {
-			position: drawpath[0],
-			map: map,
-			icon: {
-				url: "/img/startmarker.svg",
-				size: new window.naver.maps.Size(30, 45),
-				origin: new window.naver.maps.Point(0, 0),
-				anchor: new window.naver.maps.Point(15, 40),
-			},
-		};
-		var fMarkerOptions = {
-			position: drawpath[drawpath.length - 1],
-			map: map,
-			icon: {
-				url: "/img/finishmarker.svg",
-				size: new window.naver.maps.Size(30, 45),
-				origin: new window.naver.maps.Point(0, 0),
-				anchor: new window.naver.maps.Point(15, 40),
-			},
-		};
-		new window.naver.maps.Marker(sMarkerOptions);
-		new window.naver.maps.Marker(fMarkerOptions);
 		GetAddress(`${drawpath[0].x},${drawpath[0].y}`)
 			.then((res) => {
 				console.log(res);
@@ -137,33 +79,12 @@ const PostCourseMenu = (props) => {
 				}
 			})
 			.catch((err) => console.log(err));
-	}, [ycenter, xcenter]);
-
-	const [upload, setUpload] = useState(false);
-	const formData = new FormData();
-	// 등록 버튼에 setUpload(true)
-	useEffect(() => {
-		html2canvas(document.getElementById("map2"), {
-			backgroundColor: null,
-			allowTaint: true,
-			useCORS: true,
-		}).then((canvas) => {
-			canvas.toBlob(function (blob) {
-				formData.append("map_preview", blob);
-				//UploadImage(props.id, formData)
-				//	.then((response) => {
-				//		console.log(response);
-				//	})
-				//	.catch((error) => {
-				//		console.log(error);
-				//	});
-			});
-		});
-	});
-	useEffect(() => {}, [formData]);
+	}, [drawpath]);
 
 	const goPost = () => {
 		console.log(
+			"소요 시간: ",
+			time,
 			"배열: ",
 			drawpath,
 			"\n출발(구, 상세): ",
@@ -184,7 +105,7 @@ const PostCourseMenu = (props) => {
 			"\n음악: ",
 			music
 		);
-		if (description === "" || hashtag === "" || music === "") {
+		if (time === 0 || description === "" || hashtag === "" || music === "") {
 			alert("모든 항목을 입력했는지 확인해주세요.");
 		} else {
 			PostCourse(
@@ -194,6 +115,7 @@ const PostCourseMenu = (props) => {
 				arrivalsLoc,
 				arrivals,
 				hashtag,
+				time,
 				music,
 				pickColor1,
 				pickColor2,
@@ -201,12 +123,11 @@ const PostCourseMenu = (props) => {
 			)
 				.then((res) => {
 					console.log(res);
+					nav(`/course/${res.data.data.courseId}`);
 				})
 				.catch((err) => {
 					console.log(err);
 				});
-			var id = 1;
-			nav(`/course/${id}`);
 		}
 	};
 	return (
@@ -220,21 +141,26 @@ const PostCourseMenu = (props) => {
 			/>
 			<Container>
 				<div className="inner">
-					<div
-						id="map2"
-						style={{
-							width: "100%",
-							height: "400px",
-							borderRadius: "10px",
-						}}
-					/>
+					<MapPreviewDiv>
+						{drawpath && (
+							<PathtoMap path={drawpath} isLatLng={true} isStatic={true} />
+						)}
+					</MapPreviewDiv>
 				</div>
-				<SectionFlex>
-					<SectionTitle>🕙 소요 시간</SectionTitle>
-					<div className="description">
-						기록된 모든 주행 시간 데이터의 평균이 자동으로 계산됩니다.
-					</div>
-				</SectionFlex>
+				<SectionTitle>🕙 소요 시간</SectionTitle>
+				<SelectContainer>
+					{timearray.map((t) => {
+						return (
+							<SelectBox
+								key={t.num}
+								onClick={() => setTime(t.num)}
+								style={{ backgroundColor: time === t.num ? "#eaeaea" : "#fff" }}
+							>
+								<p>{t.text}</p>
+							</SelectBox>
+						);
+					})}
+				</SelectContainer>
 				<SectionTitle>🛫 출발지</SectionTitle>
 				<AddressText>{departures}</AddressText>
 				<SectionTitle>🛬 목적지</SectionTitle>
@@ -259,7 +185,7 @@ const PostCourseMenu = (props) => {
 									backgroundColor: hashtag === h ? "#eaeaea" : "#fff",
 								}}
 							>
-								<p>{h}</p>
+								<p>#{h}</p>
 							</SelectBox>
 						);
 					})}
@@ -343,6 +269,15 @@ const Container = styled.div`
 		position: relative;
 		margin-bottom: 10px;
 	}
+`;
+
+const MapPreviewDiv = styled.div`
+	width: 100%;
+	height: 330px;
+	border-radius: 10px;
+	overflow: hidden;
+	position: relative;
+	margin-bottom: 10px;
 `;
 
 const SectionFlex = styled.div`

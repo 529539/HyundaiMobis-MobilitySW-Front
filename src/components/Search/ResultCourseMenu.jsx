@@ -5,7 +5,6 @@ import TopBar from "../common/TopBar";
 import { GoSearch } from "react-icons/go";
 import BookmarkBox from "../common/BookmarkBox";
 import { SearchCourse } from "../../api/course";
-import { mockarray } from "../../api/_mock";
 
 const ResultCourseMenu = (props) => {
 	const nav = useNavigate();
@@ -14,6 +13,7 @@ const ResultCourseMenu = (props) => {
 	const [departures, setDepartures] = useState("null");
 	const [arrivals, setArrivals] = useState("null");
 	const [hashtag, setHashtag] = useState("null");
+	const [array, setArray] = useState([]);
 	useEffect(() => {
 		setTime(searchParams.get("time"));
 		setDepartures(searchParams.get("departures"));
@@ -31,9 +31,12 @@ const ResultCourseMenu = (props) => {
 	};
 	useEffect(() => {
 		timeRevert(time);
-		// SearchCourse(time, departures, arrivals, hashtag)
-		// 	.then((res) => console.log(res))
-		// 	.catch((err) => console.log(err));
+		SearchCourse(Number(time), departures, arrivals, hashtag)
+			.then((res) => {
+				console.log(res);
+				setArray(res.data.data);
+			})
+			.catch((err) => console.log(err));
 	}, [time]);
 	return (
 		<Wrapper>
@@ -55,7 +58,7 @@ const ResultCourseMenu = (props) => {
 					</SearchBox>
 					<div className="recom">정렬: 즐겨찾기 수</div>
 				</div>
-				{mockarray.map((course) => {
+				{array.map((course) => {
 					return (
 						<BookmarkBox course={course} key={course.courseId} isMy={false} />
 					);

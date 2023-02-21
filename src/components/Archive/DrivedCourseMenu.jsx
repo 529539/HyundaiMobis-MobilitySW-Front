@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TopBar from "../common/TopBar";
 import DeleteBox from "../common/DeleteBox";
-import { mockarray } from "../../api/_mock";
+import { GetDrivedCourse } from "../../api/archive";
 
 const DrivedCourseMenu = () => {
+	const [array, setArray] = useState([]);
+	useEffect(() => {
+		GetDrivedCourse(1)
+			.then((res) => {
+				console.log(res.data);
+				setArray(res.data.data);
+			})
+			.catch((err) => console.log(err));
+	}, []);
 	return (
 		<Wrapper>
 			<TopBar title="나의 주행 기록" logo={false} back={true} />
 			<Container>
 				<div className="recom">오래된순</div>
-				{mockarray.map((course) => {
+				{array.map((course) => {
 					return (
 						<DeleteBox
 							course={course}

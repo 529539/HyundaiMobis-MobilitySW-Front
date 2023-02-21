@@ -11,7 +11,7 @@ const CourseMainMenu = () => {
 	return (
 		<Wrapper>
 			<TopBar text="" logo={true} back={false} />
-			<div className="title-text">코스 검색 메인</div>
+			<div className="title-text"></div>
 			<MenuDiv onClick={() => nav("/search-course")}>
 				{lottiesearch()}
 				<Gradient />
@@ -50,7 +50,6 @@ const Wrapper = styled.div`
 		font-size: 24px;
 		text-align: center;
 		color: #263f81;
-		height: 50px;
 	}
 `;
 

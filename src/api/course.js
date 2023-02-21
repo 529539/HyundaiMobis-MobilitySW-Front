@@ -19,6 +19,15 @@ export const SearchCourse = async (
 	}
 };
 
+export const GetCourse = async (courseId) => {
+	try {
+		const response = await CourseService.getCourse(courseId);
+		return Promise.resolve(response);
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
 export const PostCourse = async (
 	description,
 	startLocation,
@@ -26,6 +35,7 @@ export const PostCourse = async (
 	endLocation,
 	endDetail,
 	hashtag,
+	totalTime,
 	music,
 	color1,
 	color2,
@@ -39,6 +49,7 @@ export const PostCourse = async (
 			endLocation,
 			endDetail,
 			hashtag,
+			totalTime,
 			music,
 			color1,
 			color2,

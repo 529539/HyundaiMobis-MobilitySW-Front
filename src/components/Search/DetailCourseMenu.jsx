@@ -2,52 +2,28 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { SearchYoutube } from "../../api/youtubesearch";
-import { GetUploadedCourse } from "../../api/archive";
+import { GetCourse } from "../../api/course";
 import TopBar from "../common/TopBar";
+import PathtoMap from "../Drive/PathtoMap";
 import mappreview from "../../assets/testmappreview.svg";
 
 const DetailCourseMenu = () => {
 	const nav = useNavigate();
 	const params = useParams();
 	const [currentCourse, setCurrentCourse] = useState({});
-	const [time, setTime] = useState("");
-	const [query, setQuery] = useState("");
 	const [videoID, setVideoID] = useState("");
 	useEffect(() => {
-		setCurrentCourse({
-			courseId: 1,
-			userId: 1,
-			description:
-				"어쩌구 저쩌구 어쩌구 저쩌구어쩌구 저쩌구어쩌구 저쩌구어쩌구 저쩌구어쩌구 저쩌구어쩌구 저쩌구어쩌구 저쩌구",
-			totalTime: 20,
-			startLocation: "종로구",
-			startDetail: "서울특별시 종로구 사직로 161 경복궁",
-			endLocation: "마포구",
-			endDetail: "서울특별시 마포구 월드컵로 212 마포구청",
-			hashtag: "#파이팅넘치는",
-			music: "essential%20마음이%20몽글몽글해지는%20몽환적인%20사운드",
-			scrap: 50,
-			light1: "#FF0099",
-			light2: "#FFCB14",
-		});
-		console.log(currentCourse);
-		timeRevert();
-		setQuery(currentCourse.music);
-		GetUploadedCourse(1).then((res) => console.log(res));
+		GetCourse(params.id)
+			.then((res) => {
+				console.log(res.data);
+				setCurrentCourse(res.data.data[0]);
+			})
+			.catch((err) => console.log(err));
 	}, []);
-	const timeRevert = () => {
-		var min = currentCourse.totalTime;
-		if (min <= 60) setTime(`약 ${min}분`);
-		else {
-			var h = parseInt(min / 60);
-			var m = min % 60;
-			setTime(`약 ${h}시간 ${m}분`);
-		}
-	};
 	useEffect(() => {
-		//getVideoID();
-	}, [query]);
-	const getVideoID = () => {
+		//getVideoID(currentCourse.music);
+	}, [currentCourse]);
+	const getVideoID = (query) => {
 		SearchYoutube(query)
 			.then((res) => {
 				//console.log(res);
@@ -66,29 +42,43 @@ const DetailCourseMenu = () => {
 			<TopBar title="코스 상세" logo={false} back={true} />
 			<Container>
 				<MapPreviewDiv>
-					<MapPreview src={mappreview} />
+					{currentCourse.path && (
+						<PathtoMap
+							path={currentCourse.path}
+							isLatLng={false}
+							isStatic={false}
+						/>
+					)}
 				</MapPreviewDiv>
 				<SectionFlex>
 					<SectionTitle>🕙 소요 시간</SectionTitle>
-					<Text style={{ marginTop: "10px" }}>{time}</Text>
+					<Text style={{ marginTop: "10px" }}>
+						{currentCourse.totalTime <= 60
+							? `약 ${currentCourse.totalTime}분`
+							: `약 ${parseInt(currentCourse.totalTime / 60)}시간 ${
+									currentCourse.totalTime % 60
+							  }분`}
+					</Text>
 				</SectionFlex>
 				<SectionTitle>🛫 출발지</SectionTitle>
 				<Text>{currentCourse.startDetail}</Text>
 				<SectionTitle>🛬 목적지</SectionTitle>
 				<Text>{currentCourse.endDetail}</Text>
 				<SectionTitle>📝 상세 설명</SectionTitle>
-				<Text>{currentCourse.description}</Text>
+				<Text>
+					{currentCourse.description === null ? "-" : currentCourse.description}
+				</Text>
 				<SectionTitle>#️⃣ 무드 해시태그</SectionTitle>
 				<div style={{ display: "inline-block" }}>
 					<SelectBox>
-						<div>{currentCourse.hashtag}</div>
+						<div>#{currentCourse.hashtag}</div>
 					</SelectBox>
 				</div>
 				<SectionTitle>💡 차량 조명</SectionTitle>
 				<div className="inner">
 					<ColorPreview
 						style={{
-							background: `linear-gradient(90deg, ${currentCourse.light1} 0%, ${currentCourse.light2} 100%)`,
+							background: `linear-gradient(90deg, ${currentCourse.color1} 0%, ${currentCourse.color2} 100%)`,
 						}}
 					/>
 				</div>
@@ -143,19 +133,10 @@ const Container = styled.div`
 const MapPreviewDiv = styled.div`
 	width: 100%;
 	height: 330px;
-	box-shadow: inset 1px 2px 6px rgba(0, 0, 0, 0.3);
 	border-radius: 10px;
 	overflow: hidden;
 	position: relative;
 	margin-bottom: 10px;
-`;
-
-const MapPreview = styled.img`
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	position: relative;
-	z-index: -5;
 `;
 
 const SectionFlex = styled.div`

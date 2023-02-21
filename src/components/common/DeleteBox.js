@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import testmappreview from "../../assets/testmappreview.svg";
+import PathtoMap from "../Drive/PathtoMap";
 import { BiTrash } from "react-icons/bi";
-// api 받아오면 지우고 앞에 course. 붙이기
-const date = "2023-02-13";
-const startTime = "16:58:54";
-const endTime = "17:19:46";
-const createdAt = "2023-02-19";
+import { DeleteUploadedCourse } from "../../api/archive";
 
 const DeleteBox = (props) => {
 	const { course, isDeleteAble } = props;
 	const nav = useNavigate();
-	//courseId로 사진 조회
 	const [timeText, setTimeText] = useState("");
 	const timeRevert = (time) => {
 		if (time <= 60) setTimeText(`약 ${time}분`);
@@ -25,18 +20,30 @@ const DeleteBox = (props) => {
 	useEffect(() => {
 		timeRevert(course.totalTime);
 	}, [course]);
+	const Delete = () => {
+		DeleteUploadedCourse(course.courseId)
+			.then((res) => console.log(res))
+			.catch((err) => console.log(err));
+	};
 	return (
 		<Wrapper>
 			<UnderBox>
 				<div className="text">
 					{!isDeleteAble
-						? `${date} ${startTime} ~ ${endTime}`
-						: `등록일: ${createdAt}`}
+						? `${course.date} ${course.startTime} ~ ${course.endTime}`
+						: `등록일: ${course.createdAt}`}
 				</div>
 			</UnderBox>
 			<Box onClick={() => nav(`/course/${course.courseId}`)}>
 				<MapPreviewDiv>
-					<MapPreview src={testmappreview} />
+					{course.path && (
+						<PathtoMap
+							path={course.path}
+							isLatLng={false}
+							isStatic={true}
+							isSmall={true}
+						/>
+					)}
 				</MapPreviewDiv>
 				<TextDiv>
 					<div>🕙 {timeText}</div>
@@ -46,7 +53,7 @@ const DeleteBox = (props) => {
 				</TextDiv>
 			</Box>
 			{isDeleteAble ? (
-				<DeleteDiv onClick={() => console.log(`Delete(${course.courseId})`)}>
+				<DeleteDiv onClick={() => Delete()}>
 					<BiTrash fill="#727272" size="20" />
 				</DeleteDiv>
 			) : null}
@@ -111,14 +118,6 @@ const MapPreviewDiv = styled.div`
 	margin: 0 10px;
 `;
 
-const MapPreview = styled.img`
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	position: relative;
-	z-index: 0;
-`;
-
 const TextDiv = styled.div`
 	width: 185px;
 	height: 90%;
@@ -129,9 +128,10 @@ const TextDiv = styled.div`
 	div {
 		font-family: "Pretendard";
 		font-weight: 400;
-		font-size: 13px;
+		font-size: 12px;
 		margin: 5px 0;
 		word-break: keep-all;
+		overflow-y: hidden;
 	}
 `;
 

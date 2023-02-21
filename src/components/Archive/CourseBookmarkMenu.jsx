@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TopBar from "../common/TopBar";
 import BookmarkBox from "../common/BookmarkBox";
-import { mockarray } from "../../api/_mock";
+import { GetBookmarkCourse } from "../../api/archive";
 
 const CourseBookmarkMenu = () => {
+	const [array, setArray] = useState([]);
+	useEffect(() => {
+		GetBookmarkCourse(1)
+			.then((res) => {
+				console.log(res.data);
+				setArray(res.data.data);
+			})
+			.catch((err) => console.log(err));
+	}, []);
 	return (
 		<Wrapper>
 			<TopBar title="내가 즐겨찾기한 코스" logo={false} back={true} />
 			<Container>
 				<div className="recom">오래된순</div>
-				{mockarray.map((course) => {
+				{array.map((course) => {
 					return (
 						<BookmarkBox course={course} key={course.courseId} isMy={true} />
 					);

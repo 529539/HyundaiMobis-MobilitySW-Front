@@ -12,13 +12,13 @@ const ArchiveMainMenu = () => {
 	return (
 		<Wrapper>
 			<TopBar text="" logo={true} back={false} />
-			<div className="title-text">아카이브 메인</div>
+			<div className="title-text"></div>
 			<MenuDiv onClick={() => nav("/drived")}>
 				{lottiehistory()}
 				<Gradient />
 				<MenuTitle>나의 주행 기록</MenuTitle>
 				<MenuDetail>
-					000에서 주행한 <br /> 나의 모든 주행 기록 열람
+					MooDrive에서 주행한 <br /> 나의 모든 주행 기록 열람
 				</MenuDetail>
 				<Arrow src={arrow} />
 			</MenuDiv>
@@ -52,20 +52,19 @@ export default ArchiveMainMenu;
 
 const Wrapper = styled.div`
 	width: 100%;
-	height: 100%;
+	height: 100포;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	.title-text {
 		position: relative;
-		margin-top: 100px;
+		margin-top: 90px;
 		font-family: "Pretendard";
 		font-weight: 500;
 		font-size: 24px;
 		text-align: center;
 		color: #263f81;
-		height: 60px;
 	}
 `;
 

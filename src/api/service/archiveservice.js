@@ -1,5 +1,13 @@
 import { http } from "../http";
 
 export const ArchiveService = {
-	getUploadedCourse: (courseId) => http.get(`/api/course/draw/${courseId}`),
+	getDrivedCourse: (userId) => http.get(`/drive/${userId}`),
+	getBookmarkCourse: (userId) => http.get(`/course/scrap/${userId}`),
+	getUploadedCourse: (userId) => http.get(`/course/draw/${userId}`),
+	postBookmarkCourse: (courseId) =>
+		http.post(`/course/scrap/${courseId}`, { userId: 1 }),
+	deleteBookmarkCourse: (courseId) =>
+		http.delete(`/course/scrap/${courseId}`, { userId: 1 }),
+	deleteUploadedCourse: (courseId) =>
+		http.delete(`/course/draw/${courseId}`, { userId: 1 }),
 };
