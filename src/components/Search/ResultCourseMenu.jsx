@@ -5,6 +5,11 @@ import TopBar from "../common/TopBar";
 import { GoSearch } from "react-icons/go";
 import BookmarkBox from "../common/BookmarkBox";
 import { SearchCourse } from "../../api/course";
+import {
+	GetBookmarkCourse,
+	PostBookmarkCourse,
+	DeleteBookmarkCourse,
+} from "../../api/archive";
 
 const ResultCourseMenu = (props) => {
 	const nav = useNavigate();
@@ -14,6 +19,7 @@ const ResultCourseMenu = (props) => {
 	const [arrivals, setArrivals] = useState("null");
 	const [hashtag, setHashtag] = useState("null");
 	const [array, setArray] = useState([]);
+	const [scrapedId, setScrapedId] = useState([]);
 	useEffect(() => {
 		setTime(searchParams.get("time"));
 		setDepartures(searchParams.get("departures"));
@@ -29,15 +35,42 @@ const ResultCourseMenu = (props) => {
 			setTimeText(`약 ${h}시간 ${m}분`);
 		}
 	};
-	useEffect(() => {
-		timeRevert(time);
-		SearchCourse(Number(time), departures, arrivals, hashtag)
+	const getArray = () => {
+		SearchCourse(Number(time), departures)
 			.then((res) => {
 				console.log(res);
 				setArray(res.data.data);
 			})
 			.catch((err) => console.log(err));
+		// GetBookmarkCourse(1)
+		// 	.then((res) => {
+		// 		console.log(res.data);
+		// 		console.log(res.data.data.map((c) => c.courseId));
+		// 		setScrapedId(res.data.data.map((c) => c.courseId));
+		// 		console.log("scrapedId", scrapedId);
+		// 	})
+		// 	.catch((err) => console.log(err));
+	};
+	useEffect(() => {
+		timeRevert(time);
+		getArray();
 	}, [time]);
+	const Scrap = (courseId) => {
+		PostBookmarkCourse(courseId)
+			.then((res) => {
+				console.log(res);
+				getArray();
+			})
+			.catch((err) => console.log(err));
+	};
+	const UnScrap = (courseId) => {
+		DeleteBookmarkCourse(courseId)
+			.then((res) => {
+				console.log(res);
+				getArray();
+			})
+			.catch((err) => console.log(err));
+	};
 	return (
 		<Wrapper>
 			<TopBar title="검색 결과" logo={false} back={true} />
@@ -58,11 +91,18 @@ const ResultCourseMenu = (props) => {
 					</SearchBox>
 					<div className="recom">정렬: 즐겨찾기 수</div>
 				</div>
-				{array.map((course) => {
-					return (
-						<BookmarkBox course={course} key={course.courseId} isMy={false} />
-					);
-				})}
+				{scrapedId &&
+					array.map((course) => {
+						return (
+							<BookmarkBox
+								course={course}
+								key={course.courseId}
+								isScraped={scrapedId.includes(course.courseId)}
+								Scrap={Scrap}
+								UnScrap={UnScrap}
+							/>
+						);
+					})}
 			</Container>
 		</Wrapper>
 	);
@@ -72,7 +112,7 @@ export default ResultCourseMenu;
 
 const Wrapper = styled.div`
 	width: 100%;
-	height: 100vh;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -80,6 +120,7 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
 	margin-top: 90px;
+	padding-bottom: 100px;
 	width: 85%;
 	display: flex;
 	flex-direction: column;

@@ -6,9 +6,10 @@ import fillbookmark from "../../assets/fillbookmark.svg";
 import strokebookmark from "../../assets/strokebookmark.svg";
 
 const BookmarkBox = (props) => {
-	const { course, isMy, Scrap, UnScrap } = props;
-	const [src, setSrc] = useState(isMy ? fillbookmark : strokebookmark);
+	const { course, isScraped, Scrap, UnScrap } = props;
+	const [src, setSrc] = useState(isScraped ? fillbookmark : strokebookmark);
 	const nav = useNavigate();
+	console.log(isScraped);
 	return (
 		<Wrapper>
 			<Box onClick={() => nav(`/course/${course.courseId}`)}>
@@ -38,7 +39,7 @@ const BookmarkBox = (props) => {
 			</Box>
 			<BookmarkDiv
 				onClick={
-					isMy
+					isScraped
 						? () => {
 								UnScrap(course.courseId);
 								setSrc(strokebookmark);
@@ -69,7 +70,7 @@ const Wrapper = styled.div`
 
 const Box = styled.div`
 	width: 95%;
-	height: 190px;
+	height: 200px;
 	background: #fff;
 	border: 1px solid #eaeaea;
 	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
@@ -125,5 +126,5 @@ const BookmarkDiv = styled.div`
 	img {
 		width: 20px;
 	}
-	z-index: 1000;
+	z-index: 500;
 `;

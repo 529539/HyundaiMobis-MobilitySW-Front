@@ -6,8 +6,8 @@ export const ArchiveService = {
 	getUploadedCourse: (userId) => http.get(`/course/draw/${userId}`),
 	postBookmarkCourse: (courseId) =>
 		http.post(`/course/scrap/${courseId}`, { userId: 1 }),
-	deleteBookmarkCourse: (courseId) =>
-		http.delete(`/course/scrap/${courseId}`, { userId: 1 }),
+	deleteBookmarkCourse: (scrapId) =>
+		http.delete(`/course/scrap/${scrapId}`, { userId: 1 }),
 	deleteUploadedCourse: (courseId) =>
 		http.delete(`/course/draw/${courseId}`, { userId: 1 }),
 };

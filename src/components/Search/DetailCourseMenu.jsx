@@ -13,6 +13,7 @@ const DetailCourseMenu = () => {
 	const [currentCourse, setCurrentCourse] = useState({});
 	const [videoID, setVideoID] = useState("");
 	useEffect(() => {
+		window.scrollTo(0, 0);
 		GetCourse(params.id)
 			.then((res) => {
 				console.log(res.data);

@@ -13,9 +13,9 @@ const CourseSearchMenu = () => {
 	const [aOpen, setAOpen] = useState(false);
 	const [hashtag, setHashtag] = useState(null);
 	const goSearch = () => {
-		if (time === 0) {
+		if (time === 0 || departures === null) {
 			alert(
-				"소요 시간은 필수 입력 항목입니다.\n원하는 소요 시간을 선택해주세요!"
+				"소요 시간과 출발지는 필수 입력 항목입니다.\n원하는 소요 시간, 출발지를 선택해주세요!"
 			);
 		} else {
 			const searchQuery = {
@@ -88,7 +88,7 @@ const CourseSearchMenu = () => {
 					{seoul.map((s) => {
 						return (
 							<PlaceSelectBox
-								key={s + "1"}
+								key={s + 1}
 								onClick={() => {
 									setDepartures(s);
 									setDOpen(false);
@@ -134,7 +134,7 @@ const CourseSearchMenu = () => {
 					})}
 				</PlaceSelectContainer>
 				<SectionTitle style={{ marginTop: "20px" }}>
-					#️⃣ 무드 해시태그 <span style={{ color: "#E92B25" }}>*</span>
+					#️⃣ 무드 해시태그
 				</SectionTitle>
 				<SelectContainer>
 					{hashtagarray.map((h) => {

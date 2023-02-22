@@ -1,13 +1,8 @@
 import { http } from "../http";
 
 export const CourseService = {
-	searchCourse: (totalTime, startLocation, endLocation, hashtag) =>
-		http.get("/course/search", {
-			totalTime: totalTime,
-			startLocation: startLocation,
-			endLocation: endLocation,
-			hashtag: hashtag,
-		}),
+	searchCourse: (totalTime, startLocation) =>
+		http.get(`/course/search/${totalTime}/${startLocation}`),
 	getCourse: (courseId) => http.get(`/course/detail/${courseId}`),
 	postCourse: (
 		description,

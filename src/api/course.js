@@ -1,18 +1,8 @@
 import { CourseService } from "./service/courseservice";
 
-export const SearchCourse = async (
-	totalTime,
-	startLocation,
-	endLocation,
-	hashtag
-) => {
+export const SearchCourse = async (totalTime, startLocation) => {
 	try {
-		const response = await CourseService.searchCourse(
-			totalTime,
-			startLocation,
-			endLocation,
-			hashtag
-		);
+		const response = await CourseService.searchCourse(totalTime, startLocation);
 		return Promise.resolve(response);
 	} catch (error) {
 		return Promise.reject(error);

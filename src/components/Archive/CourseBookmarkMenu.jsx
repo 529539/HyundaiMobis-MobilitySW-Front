@@ -7,8 +7,6 @@ import {
 	PostBookmarkCourse,
 	DeleteBookmarkCourse,
 } from "../../api/archive";
-import fillbookmark from "../../assets/fillbookmark.svg";
-import strokebookmark from "../../assets/strokebookmark.svg";
 
 const CourseBookmarkMenu = () => {
 	const [array, setArray] = useState([]);
@@ -31,8 +29,8 @@ const CourseBookmarkMenu = () => {
 			})
 			.catch((err) => console.log(err));
 	};
-	const UnScrap = (courseId) => {
-		DeleteBookmarkCourse(courseId)
+	const UnScrap = (scrapId) => {
+		DeleteBookmarkCourse(scrapId)
 			.then((res) => {
 				console.log(res);
 				getArray();
@@ -49,7 +47,7 @@ const CourseBookmarkMenu = () => {
 						<BookmarkBox
 							course={course}
 							key={course.courseId}
-							isMy={true}
+							isScraped={true}
 							Scrap={Scrap}
 							UnScrap={UnScrap}
 						/>

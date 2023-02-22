@@ -123,7 +123,7 @@ const PostCourseMenu = (props) => {
 			)
 				.then((res) => {
 					console.log(res);
-					nav(`/course/${res.data.data.courseId}`);
+					nav(`/course/${res.data.data.id}`);
 				})
 				.catch((err) => {
 					console.log(err);

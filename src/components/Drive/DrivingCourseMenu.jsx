@@ -25,7 +25,7 @@ const DrivingCourseMenu = () => {
 		PostDrive(currentCourse.courseId)
 			.then((res) => {
 				console.log(res);
-				setDriveId(res.data.data.driveId);
+				setDriveId(res.data.data.id);
 			})
 			.catch((err) => console.log(err));
 	};

@@ -36,9 +36,9 @@ export const PostBookmarkCourse = async (courseId) => {
 	}
 };
 
-export const DeleteBookmarkCourse = async (courseId) => {
+export const DeleteBookmarkCourse = async (scrapId) => {
 	try {
-		const response = await ArchiveService.deleteBookmarkCourse(courseId);
+		const response = await ArchiveService.deleteBookmarkCourse(scrapId);
 		return Promise.resolve(response);
 	} catch (error) {
 		return Promise.reject(error);
