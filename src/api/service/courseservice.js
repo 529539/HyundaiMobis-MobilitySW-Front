@@ -20,7 +20,6 @@ export const CourseService = {
 		http.post("/course/draw", {
 			userId: 1,
 			description: description,
-			totalTime: 0,
 			startLocation: startLocation,
 			startDetail: startDetail,
 			endLocation: endLocation,

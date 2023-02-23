@@ -5,7 +5,6 @@ import { SearchYoutube } from "../../api/youtubesearch";
 import { GetCourse } from "../../api/course";
 import TopBar from "../common/TopBar";
 import PathtoMap from "../Drive/PathtoMap";
-import mappreview from "../../assets/testmappreview.svg";
 
 const DetailCourseMenu = () => {
 	const nav = useNavigate();
