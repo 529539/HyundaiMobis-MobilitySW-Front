@@ -32,7 +32,7 @@ const DetailCourseMenu = () => {
 				return res.data;
 			})
 			.then((data) => {
-				console.log("yt title: ", data.items[0].snippet.title);
+				//console.log("yt title: ", data.items[0].snippet.title);
 				setVideoID(data.items[0].id.videoId);
 			})
 			.catch((err) => {
