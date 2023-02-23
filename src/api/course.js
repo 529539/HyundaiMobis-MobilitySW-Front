@@ -68,3 +68,12 @@ export const PatchDrive = async (driveId) => {
 		return Promise.reject(error);
 	}
 };
+
+export const C2A = async (coords) => {
+	try {
+		const response = await CourseService.c2a(coords);
+		return Promise.resolve(response);
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};

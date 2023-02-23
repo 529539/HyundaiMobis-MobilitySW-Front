@@ -9,7 +9,6 @@ const BookmarkBox = (props) => {
 	const { course, isScraped, Scrap, UnScrap } = props;
 	const [src, setSrc] = useState(isScraped ? fillbookmark : strokebookmark);
 	const nav = useNavigate();
-	console.log(isScraped);
 	return (
 		<Wrapper>
 			<Box onClick={() => nav(`/course/${course.courseId}`)}>

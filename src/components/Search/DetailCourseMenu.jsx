@@ -22,7 +22,8 @@ const DetailCourseMenu = () => {
 			.catch((err) => console.log(err));
 	}, []);
 	useEffect(() => {
-		//getVideoID(currentCourse.music);
+		// 하루 요청 100회 가능
+		getVideoID(currentCourse.music);
 	}, [currentCourse]);
 	const getVideoID = (query) => {
 		SearchYoutube(query)
@@ -31,7 +32,7 @@ const DetailCourseMenu = () => {
 				return res.data;
 			})
 			.then((data) => {
-				console.log(data.items[0]);
+				console.log("yt title: ", data.items[0].snippet.title);
 				setVideoID(data.items[0].id.videoId);
 			})
 			.catch((err) => {
@@ -85,15 +86,17 @@ const DetailCourseMenu = () => {
 				</div>
 				<SectionTitle>💿 음악 플레이리스트</SectionTitle>
 				<div className="inner">
-					<Music
-						id="ytplayer"
-						type="text/html"
-						width="320"
-						height="185"
-						src={`https://www.youtube.com/embed/${videoID}`}
-						frameborder="0"
-						allowfullscreen="allowfullscreen"
-					/>
+					{videoID && (
+						<Music
+							id="ytplayer"
+							type="text/html"
+							width="320"
+							height="185"
+							src={`https://www.youtube.com/embed/${videoID}`}
+							frameborder="0"
+							allowfullscreen="allowfullscreen"
+						/>
+					)}
 				</div>
 				<DriveButton onClick={() => nav(`/course/${params.id}/driving`)}>
 					<p>🚘</p>

@@ -29,13 +29,14 @@ const CourseBookmarkMenu = () => {
 			})
 			.catch((err) => console.log(err));
 	};
-	const UnScrap = (scrapId) => {
-		DeleteBookmarkCourse(scrapId)
-			.then((res) => {
-				console.log(res);
-				getArray();
-			})
-			.catch((err) => console.log(err));
+	const UnScrap = (courseId) => {
+		// DeleteBookmarkCourse(courseId)
+		// 	.then((res) => {
+		// 		console.log(res);
+		// 		getArray();
+		// 	})
+		// 	.catch((err) => console.log(err));
+		setArray(array.filter((course) => course.courseId !== courseId));
 	};
 	return (
 		<Wrapper>

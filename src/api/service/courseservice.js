@@ -35,4 +35,5 @@ export const CourseService = {
 		}),
 	postDrive: (courseId) => http.post(`/drive/${courseId}`, { userId: 1 }),
 	patchDrive: (driveId) => http.patch(`/drive/${driveId}`),
+	c2a: (coords) => http.get(`course/naver/${coords}`),
 };

@@ -38,18 +38,18 @@ const ResultCourseMenu = (props) => {
 	const getArray = () => {
 		SearchCourse(Number(time), departures)
 			.then((res) => {
-				console.log(res);
+				console.log(res.data);
 				setArray(res.data.data);
 			})
 			.catch((err) => console.log(err));
-		// GetBookmarkCourse(1)
-		// 	.then((res) => {
-		// 		console.log(res.data);
-		// 		console.log(res.data.data.map((c) => c.courseId));
-		// 		setScrapedId(res.data.data.map((c) => c.courseId));
-		// 		console.log("scrapedId", scrapedId);
-		// 	})
-		// 	.catch((err) => console.log(err));
+		GetBookmarkCourse(1)
+			.then((res) => {
+				console.log(res.data);
+				console.log(res.data.data.map((c) => c.courseId));
+				setScrapedId(res.data.data.map((c) => c.courseId));
+				console.log("scrapedId", scrapedId);
+			})
+			.catch((err) => console.log(err));
 	};
 	useEffect(() => {
 		timeRevert(time);
@@ -64,12 +64,13 @@ const ResultCourseMenu = (props) => {
 			.catch((err) => console.log(err));
 	};
 	const UnScrap = (courseId) => {
-		DeleteBookmarkCourse(courseId)
-			.then((res) => {
-				console.log(res);
-				getArray();
-			})
-			.catch((err) => console.log(err));
+		// DeleteBookmarkCourse(courseId)
+		// 	.then((res) => {
+		// 		console.log(res);
+		// 		getArray();
+		// 	})
+		// 	.catch((err) => console.log(err));
+		setScrapedId(scrapedId.filter((id) => id !== courseId));
 	};
 	return (
 		<Wrapper>

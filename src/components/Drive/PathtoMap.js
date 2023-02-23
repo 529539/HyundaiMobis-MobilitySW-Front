@@ -6,7 +6,6 @@ const PathtoMap = (props) => {
 	const mapElement = useRef(null);
 	const [polylinePath, setPolylinePath] = useState([]);
 	useEffect(() => {
-		console.log("PathtoMap props array", path);
 		setPolylinePath([]);
 		if (isLatLng) {
 			setPolylinePath(path);
@@ -20,7 +19,6 @@ const PathtoMap = (props) => {
 		}
 	}, []);
 	useEffect(() => {
-		console.log(polylinePath);
 		draw();
 	}, [polylinePath]);
 	const draw = () => {

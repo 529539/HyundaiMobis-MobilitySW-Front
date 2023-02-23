@@ -34,9 +34,6 @@ const DrawCourseMenu = (props) => {
 			setDrawpath(path._array);
 		});
 	}, []);
-	useEffect(() => {
-		console.log("drawpath", drawpath);
-	});
 	return (
 		<>
 			<Wrapper>

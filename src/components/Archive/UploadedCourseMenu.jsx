@@ -9,7 +9,7 @@ const UploadedCourseMenu = () => {
 	const getArray = () => {
 		GetUploadedCourse(1)
 			.then((res) => {
-				console.log(res);
+				console.log(res.data);
 				setArray(res.data.data);
 			})
 			.catch((err) => console.log(err));

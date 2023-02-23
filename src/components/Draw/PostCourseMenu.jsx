@@ -5,8 +5,7 @@ import TopBar from "../common/TopBar";
 import ColorPicker from "./ColorPicker";
 import PathtoMap from "../Drive/PathtoMap";
 import { timearray, hashtagarray } from "../Search/searchlist";
-import { GetAddress } from "../../api/navermap";
-import { PostCourse } from "../../api/course";
+import { PostCourse, C2A } from "../../api/course";
 
 const PostCourseMenu = (props) => {
 	const nav = useNavigate();
@@ -18,8 +17,6 @@ const PostCourseMenu = (props) => {
 	const [arrivalsLoc, setArrivalsLoc] = useState("");
 	const [description, setDescription] = useState("");
 	const [hashtag, setHashtag] = useState("");
-	const [color1, setColor1] = useState("#E92B25");
-	const [color2, setColor2] = useState("#263F81");
 	const [pickColor1, setPickColor1] = useState("#E92B25");
 	const [pickColor2, setPickColor2] = useState("#263F81");
 	const [openColor1, setOpenColor1] = useState(false);
@@ -39,12 +36,13 @@ const PostCourseMenu = (props) => {
 	);
 
 	useEffect(() => {
-		GetAddress(`${drawpath[0].x},${drawpath[0].y}`)
+		C2A(`${drawpath[0].x},${drawpath[0].y}`)
 			.then((res) => {
-				console.log(res);
-				return res.data;
+				//console.log(res.data);
+				return res.data.data;
 			})
 			.then((data) => {
+				console.log(data);
 				if (data.status.code === 3)
 					setDepartures(
 						"주소가 정상적으로 반환되지 않았습니다. 다시 시도해주세요."
@@ -58,12 +56,10 @@ const PostCourseMenu = (props) => {
 				}
 			})
 			.catch((err) => console.log(err));
-		GetAddress(
-			`${drawpath[drawpath.length - 1].x},${drawpath[drawpath.length - 1].y}`
-		)
+		C2A(`${drawpath[drawpath.length - 1].x},${drawpath[drawpath.length - 1].y}`)
 			.then((res) => {
-				//console.log(res);
-				return res.data;
+				//console.log(res.data);
+				return res.data.data;
 			})
 			.then((data) => {
 				if (data.status.code === 3)
