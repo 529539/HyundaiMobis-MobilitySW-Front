@@ -21,6 +21,7 @@ const ResultCourseMenu = (props) => {
 	const [array, setArray] = useState([]);
 	const [scrapedId, setScrapedId] = useState([]);
 	useEffect(() => {
+		window.scrollTo(0, 0);
 		setTime(searchParams.get("time"));
 		setDepartures(searchParams.get("departures"));
 		setArrivals(searchParams.get("arrivals"));

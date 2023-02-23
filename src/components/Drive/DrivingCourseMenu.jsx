@@ -13,6 +13,7 @@ const DrivingCourseMenu = () => {
 	const [isStart, setIsStart] = useState(false);
 	const [driveId, setDriveId] = useState(null);
 	useEffect(() => {
+		window.scrollTo(0, 0);
 		GetCourse(params.id)
 			.then((res) => {
 				console.log(res.data);
