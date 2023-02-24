@@ -30,16 +30,16 @@ const CourseSearchMenu = () => {
 		}
 	};
 	useEffect(() => {
-		console.log(
-			"소요 시간: ",
-			time,
-			"\n출발지: ",
-			departures,
-			"\n목적지: ",
-			arrivals,
-			"\n무드 해시태그: ",
-			hashtag
-		);
+		// console.log(
+		// 	"소요 시간: ",
+		// 	time,
+		// 	"\n출발지: ",
+		// 	departures,
+		// 	"\n목적지: ",
+		// 	arrivals,
+		// 	"\n무드 해시태그: ",
+		// 	hashtag
+		// );
 	});
 	useEffect(() => {
 		setTime(0);
