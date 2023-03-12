@@ -47,20 +47,7 @@
   <br>
 <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/>
 <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=Github&logoColor=white"/>
-  <br><br><br>
-<h3>💚 팀원 소개 💚</h3>
-  <table border="" cellspacing="0" cellpadding="0" width="100%">
-    <tr width="100%">
-      <td  align="center"><a href="https://github.com/529539"><b>이서진</b></a></td>
-      <td  align="center">프론트엔드 개발</td>
-        <td align="center">이화여자대학교 컴퓨터공학전공 21</td>
-   </tr>
-    <tr width="100%">
-      <td  align="center"><a href="https://github.com/cha2y0ung"><b>임채영</b></a></td>
-      <td  align="center">백엔드 개발</td>
-        <td align="center">이화여자대학교 컴퓨터공학전공 21</td>
-   </tr>
-</table>
+  <br><br>
 
 ![footer](https://capsule-render.vercel.app/api?type=waving&color=0:263F81,100:E92B25&height=90&section=footer)
 
